@@ -47,7 +47,7 @@ describe('CustomError', () => {
     it('should return instance of self for chaining', () => {
       const causeError = new Error();
       const myError = new MyCustomError();
-      expect(myError.causedBy(causeError)).to.equal(myError)
+      expect(myError.causedBy(causeError)).to.equal(myError);
     });
 
     it('should store cause error under "cause" property', () => {

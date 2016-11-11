@@ -1,7 +1,7 @@
 'use strict';
 
 
-module.exports = (wallaby) => {
+module.exports = () => {
   const SOURCES = 'src/**/*.js';
   const TESTS = 'src/**/*.test.js';
 
@@ -22,6 +22,6 @@ module.exports = (wallaby) => {
       const path = require('path');
       require(path.join(wallaby.localProjectDir, 'scripts', 'setup-tests.js'));
     }
-  }
+  };
 };
 
