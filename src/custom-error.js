@@ -6,7 +6,7 @@ const vm = require('vm');
 class CustomError {
   constructor(...message) {
     if (this.constructor === CustomError) {
-      throw new Error('new called on CustomError, create custom Error type instead!');
+      throw new Error('new called on CustomError, create custom error type instead');
     }
 
     Error.captureStackTrace(this, this.constructor);
