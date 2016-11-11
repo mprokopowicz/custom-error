@@ -6,6 +6,7 @@
   "scripts": {
     "pretest": "rm -rf coverage",
     "test": "nyc -r=text -r=lcov -n src _mocha -r scripts/setup-tests.js --compilers js:babel-register src/*.test.js",
+    "posttest": "sed \"s*`pwd`/**\" coverage/lcov.info > coverage/lcov_relative.info",
     "prebuild": "rm -rf lib",
     "build": "babel --ignore **/*.test.js -d lib src",
     "lint": "eslint ."

@@ -6,9 +6,8 @@ node_js:
   - "4"
   - "0.12"
   - "0.10"
-
 addons:
     code_climate:
         repo_token: 8b175ee9673e48b434ff0b4eeebe5cb261988b5a26c142b204a84b3b681a8f7d
 after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
+  - codeclimate-test-reporter < coverage/lcov_relative.info
