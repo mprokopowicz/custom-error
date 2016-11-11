@@ -3,13 +3,28 @@
 const format = require('util').format;
 const vm = require('vm');
 
-class CustomError extends Error {
+class CustomError {
   constructor(...message) {
-    super();
     if (this.constructor === CustomError) {
       throw new Error('new called on CustomError, create custom Error type instead!');
     }
-    this.message = message.length ? format(...message) : this.defaultMessage;
+
+    Error.captureStackTrace(this, this.constructor);
+
+    Object.defineProperties(this, {
+      message: {
+        enumerable: false,
+        writable: true,
+        configurable: false,
+        value: message.length ? format(...message) : this.defaultMessage
+      },
+      cause: {
+        enumerable: false,
+        writable: true,
+        configurable: false,
+        value: null
+      }
+    });
   }
 
   causedBy(causeError) {
@@ -42,6 +57,14 @@ class CustomError extends Error {
       throw new Error(`can not create global error type "${type}"; there is already such global`);
     }
     global[type] = CustomError.create(type, ...defaultMessage);
+  }
+
+  toString() {
+    return this.message ? `${this.name}: ${this.message}` : this.name;
+  }
+
+  inspect() {
+    return this.stack;
   }
 }
 CustomError.prototype.name = 'CustomError';

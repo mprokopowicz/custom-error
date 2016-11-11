@@ -68,10 +68,8 @@ describe('CustomError', () => {
       const MyCustomError = CustomError.create('CustomError');
 
       expect(MyCustomError).to.be.an('Function');
-      expect(Error.isPrototypeOf(MyCustomError)).to.be.ok;
       expect(CustomError.isPrototypeOf(MyCustomError)).to.be.ok;
       expect(() => new MyCustomError()).not.to.throw();
-      expect(new MyCustomError()).to.be.instanceOf(Error);
       expect(new MyCustomError()).to.be.instanceOf(CustomError);
     });
 
@@ -79,10 +77,8 @@ describe('CustomError', () => {
       const MyParentError = CustomError.create('MyParentError');
       const MyChildError = MyParentError.create('MyChildError');
 
-      expect(Error.isPrototypeOf(MyChildError)).to.be.ok;
       expect(CustomError.isPrototypeOf(MyChildError)).to.be.ok;
       expect(MyParentError.isPrototypeOf(MyChildError)).to.be.ok;
-      expect(new MyChildError()).to.be.instanceOf(Error);
       expect(new MyChildError()).to.be.instanceOf(CustomError);
       expect(new MyChildError()).to.be.instanceOf(MyParentError);
       expect(new MyChildError()).to.be.instanceOf(MyChildError);
@@ -135,6 +131,21 @@ describe('CustomError', () => {
 
       expect(new ChildError('child custom').toString())
         .to.match(/^ChildError: child custom$/);
+    });
+
+    it('should have only error type', function() {
+      const MyErrorType = CustomError.create('MyErrorType');
+      const myError = new MyErrorType();
+      expect(myError.toString()).to.equal('MyErrorType');
+    });
+  });
+
+  describe('inspect', function() {
+    it('should return captured stack', function() {
+      const MyErrorType = CustomError.create('MyErrorType');
+      const myError = new MyErrorType();
+      const inspectLines = myError.inspect().split('\n');
+      expect(inspectLines[0]).to.equal('MyErrorType');
     });
   });
 });
