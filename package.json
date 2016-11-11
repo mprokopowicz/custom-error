@@ -12,6 +12,13 @@
   ],
   "author": "Michał Prokopowicz",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mprokopowicz/custom-error"
+  },
+  "bugs": {
+    "url": "https://github.com/mprokopowicz/custom-error/issues"
+  },
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
