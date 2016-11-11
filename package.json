@@ -4,8 +4,10 @@
   "description": "Produce custom error types",
   "main": "lib/custom-error.js",
   "scripts": {
-    "test": "mocha -r scripts/setup-tests.js --compilers js:babel-register src/*.test.js",
-    "build": "rm -rf lib && babel --ignore **/*.test.js -d lib src "
+    "pretest": "rm -rf coverage",
+    "test": "nyc -r=text -r=lcov -n src _mocha -r scripts/setup-tests.js --compilers js:babel-register src/*.test.js",
+    "prebuild": "rm -rf lib",
+    "build": "babel --ignore **/*.test.js -d lib src"
   },
   "keywords": [
     "error"
@@ -20,9 +22,11 @@
     "url": "https://github.com/mprokopowicz/custom-error/issues"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "nyc": "^8.4.0"
   }
 }
