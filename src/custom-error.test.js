@@ -50,7 +50,7 @@ describe('CustomError', () => {
       expect(myError.causedBy(causeError)).to.equal(myError);
     });
 
-    it.only('should store cause error under "cause" property', () => {
+    it('should store cause error under "cause" property', () => {
       const causeErrorWithoutMessage = new Error();
       const causeErrorWithMessage = new Error('culprit');
       const customErrorWithoutMessage = new MyCustomError();
