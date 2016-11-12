@@ -1,6 +1,6 @@
 {
   "name": "@mprokopowicz/custom-error",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Produce custom error types",
   "main": "lib/custom-error.js",
   "scripts": {
@@ -9,11 +9,19 @@
     "posttest": "sed \"s*`pwd`/**\" coverage/lcov.info > coverage/lcov_relative.info",
     "prebuild": "rm -rf lib",
     "build": "babel --ignore **/*.test.js -d lib src",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepublish": "npm run lint && npm test && npm run build"
   },
   "keywords": [
     "error"
   ],
+  "files": [
+    "lib/custom-error.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=0.10"
+  },
   "author": "Michał Prokopowicz",
   "license": "ISC",
   "repository": {
