@@ -2,5 +2,6 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/mprokopowicz/custom-error.svg?style=flat-square)](https://codeclimate.com/github/mprokopowicz/custom-error)
 [![Coverage](https://img.shields.io/codeclimate/coverage/github/mprokopowicz/custom-error.svg?style=flat-square)](https://codeclimate.com/github/mprokopowicz/custom-error/coverage)
 [![Issues](https://img.shields.io/codeclimate/issues/github/mprokopowicz/custom-error.svg?style=flat-square)](https://codeclimate.com/github/mprokopowicz/custom-error/issues)
-
+[![dependencies](https://img.shields.io/david/mprokopowicz/custom-error.svg?style=flat-square)]()
+[![devDependencies](https://img.shields.io/david/dev/mprokopowicz/custom-error.svg?style=flat-square)]()
 # custom-error
