@@ -10,7 +10,7 @@
     "prebuild": "rm -rf lib",
     "build": "babel --ignore **/*.test.js -d lib src",
     "lint": "eslint .",
-    "prepublish": "npm run lint && npm test && npm run build"
+    "preversion": "npm run lint && npm test && npm run build"
   },
   "keywords": [
     "error"
