@@ -13,7 +13,7 @@
     "preversion": "npm run lint && npm test && npm run build"
   },
   "keywords": [
-    "error"
+    "error", "exception", "custom error", "custom exception" ,"error handling"
   ],
   "files": [
     "lib/custom-error.js",
