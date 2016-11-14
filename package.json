@@ -1,6 +1,6 @@
 {
   "name": "@mprokopowicz/custom-error",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Produce custom error types",
   "main": "lib/custom-error.js",
   "scripts": {
@@ -13,7 +13,11 @@
     "preversion": "npm run lint && npm test && npm run build"
   },
   "keywords": [
-    "error", "exception", "custom error", "custom exception" ,"error handling"
+    "error",
+    "exception",
+    "custom error",
+    "custom exception",
+    "error handling"
   ],
   "files": [
     "lib/custom-error.js",
