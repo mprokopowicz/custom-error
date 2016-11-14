@@ -15,8 +15,6 @@ Create custom error types in node.js (exclusive) with meaningful messages and ea
 
 `CustomError` **DO NOT** inherits from standard `Error`, but behaves like it, including proper stack traces and proper formatting when used in ```console.log```. [See more below](#whyNot).
 
-In given example you may suppose that it is some error throwed by `doSomethingThatThrows`, but there is a typo in there (so**m**ething vs so**n**ething).
-
 ## API Reference
 
 ### `CustomError.create(<String> type, <String> ...defaultMessage)`
@@ -231,6 +229,7 @@ try {
 }
 ```
 
+In given example you may suppose that it is some error throwed by `doSomethingThatThrows`, but there is a typo in there (so**m**ething vs so**n**ething).
 
 ## License
 
