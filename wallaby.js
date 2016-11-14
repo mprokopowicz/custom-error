@@ -1,7 +1,7 @@
 'use strict';
 
 
-module.exports = () => {
+module.exports = (wallaby) => {
   const SOURCES = 'src/**/*.js';
   const TESTS = 'src/**/*.test.js';
 
@@ -16,6 +16,10 @@ module.exports = () => {
     env: {
       type: 'node',
       runner: 'node'
+    },
+
+    compilers: {
+      [SOURCES]: wallaby.compilers.babel({})
     },
 
     setup: (wallaby) => {
