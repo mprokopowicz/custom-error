@@ -1,56 +1,56 @@
 'use strict';
 
-describe('CustomError', () => {
+describe('CustomError', function() {
   const util = require('util');
   const CustomError = require('./custom-error');
 
-  describe('constructor', () => {
+  describe('constructor', function() {
     let MyCustomError;
     beforeEach(() => MyCustomError = CustomError.create('MyCustomError', 'default message'));
 
-    it('should not allow to create direct instances of CustomError', () => {
+    it('should not allow to create direct instances of CustomError', function() {
       expect(() => new CustomError()).to.throw(Error);
     });
 
-    it('should set default message', () => {
+    it('should set default message', function() {
       expect(new MyCustomError()).to.have.property('message', 'default message');
     });
 
-    it('should set passed message', () => {
+    it('should set passed message', function() {
       expect(new MyCustomError('my message')).to.have.property('message', 'my message');
     });
 
-    it('should format passed message using util.format', () => {
+    it('should format passed message using util.format', function() {
       let messageArguments = ['string=%s, num=%d, obj=%j', 'string', 123, {a: 1}];
       expect(new MyCustomError(...messageArguments)).to.have.property('message', util.format(...messageArguments));
     });
   });
 
-  describe('causedBy', () => {
+  describe('causedBy', function() {
     let MyCustomError;
     beforeEach(() => MyCustomError = CustomError.create('MyCustomError'));
-    it('should set message to cause error message', () => {
+    it('should set message to cause error message', function() {
       expect(new MyCustomError().causedBy(new Error('culprit'))).to.have.property('message', 'culprit');
     });
 
-    it('should append cause error message to error message', () => {
+    it('should append cause error message to error message', function() {
       const error = new MyCustomError('oops!').causedBy(new Error('culprit'));
       expect(error).to.have.property('message', 'oops! << culprit');
     });
 
-    it('should not modify empty message', () => {
+    it('should not modify empty message', function() {
       const causeError = new Error();
       const myError = new MyCustomError().causedBy(causeError);
       expect(myError).to.have.property('message', '');
     });
 
-    it('should return instance of self for chaining', () => {
+    it('should return instance of self for chaining', function() {
       const causeError = new Error();
       const myError = new MyCustomError();
       expect(myError.causedBy(causeError)).to.equal(myError);
     });
 
-    it('should store cause error under "cause" property', () => {
+    it('should store cause error under "cause" property', function() {
       const causeErrorWithoutMessage = new Error();
       const causeErrorWithMessage = new Error('culprit');
       const customErrorWithoutMessage = new MyCustomError();
@@ -63,8 +63,8 @@ describe('CustomError', () => {
     });
   });
 
-  describe('create', () => {
-    it('should return constructor of new error type', () => {
+  describe('create', function() {
+    it('should return constructor of new error type', function() {
       const MyCustomError = CustomError.create('CustomError');
 
       expect(MyCustomError).to.be.an('Function');
@@ -73,7 +73,7 @@ describe('CustomError', () => {
       expect(new MyCustomError()).to.be.instanceOf(CustomError);
     });
 
-    it('should allow to create child error types', () => {
+    it('should allow to create child error types', function() {
       const MyParentError = CustomError.create('MyParentError');
       const MyChildError = MyParentError.create('MyChildError');
 
@@ -96,10 +96,10 @@ describe('CustomError', () => {
     });
   });
 
-  describe('global', () => {
+  describe('global', function() {
     afterEach(() => delete global['GlobalError']);
 
-    it('should throw Error if global name is already taken', () => {
+    it('should throw Error if global name is already taken', function() {
       expect(() => CustomError.global('Error')).to.throw(/can not create global error type "Error"/);
       expect(() => CustomError.global('TypeError')).to.throw(/can not create global error type "TypeError"/);
       expect(() => CustomError.global('RangeError')).to.throw(/can not create global error type "RangeError"/);
@@ -107,7 +107,7 @@ describe('CustomError', () => {
       expect(() => CustomError.global('GlobalError')).not.to.throw();
     });
 
-    it('should expose new error type constructor as global', () => {
+    it('should expose new error type constructor as global', function() {
       CustomError.global('GlobalError', 'Global error!');
 
       expect(GlobalError).not.to.be.undefined;
@@ -115,11 +115,11 @@ describe('CustomError', () => {
     });
   });
 
-  describe('toString', () => {
+  describe('toString', function() {
     const ParentError = CustomError.create('ParentError', 'parent default');
     const ChildError = ParentError.create('ChildError', 'child default');
 
-    it('should have error type, semicolon and message', () => {
+    it('should have error type, semicolon and message', function() {
       expect(new ParentError().toString())
         .to.match(/^ParentError: parent default$/);
 
