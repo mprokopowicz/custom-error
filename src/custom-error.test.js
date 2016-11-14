@@ -148,4 +148,39 @@ describe('CustomError', function() {
       expect(inspectLines[0]).to.equal('MyErrorType');
     });
   });
+
+  describe('overloading message formatter', function() {
+    describe('es6 way', function() {
+      it('should allow to overload formatMessage method', function() {
+        class MyError extends CustomError {
+          formatMessage(array) {
+            return array.join(' - ');
+          }
+        }
+
+        const error = new MyError(['1', '2', 'foo', 'bar']);
+        expect(error).to.be.instanceOf(CustomError);
+        expect(error.message).to.equal('1 - 2 - foo - bar');
+      });
+
+      describe('es5 way', function() {
+        it('should allow to overload formatMessage method', function() {
+          function MyError() {
+            CustomError.apply(this, arguments);
+          }
+
+          MyError.prototype = Object.create(CustomError.prototype);
+          MyError.prototype.constructor = MyError;
+
+          MyError.prototype.formatMessage = function(array) {
+            return array.join(' - ');
+          };
+
+          var error = new MyError(['1', '2', 'foo', 'bar']);
+          expect(error).to.be.instanceOf(CustomError);
+          expect(error.message).to.equal('1 - 2 - foo - bar');
+        });
+      });
+    });
+  });
 });

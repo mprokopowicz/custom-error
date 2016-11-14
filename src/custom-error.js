@@ -16,7 +16,7 @@ class CustomError {
         enumerable: false,
         writable: true,
         configurable: false,
-        value: message.length ? format(...message) : this.defaultMessage
+        value: this.formatMessage(...message)
       },
       cause: {
         enumerable: false,
@@ -25,6 +25,10 @@ class CustomError {
         value: null
       }
     });
+  }
+
+  formatMessage(...message) {
+    return message.length ? format(...message) : this.defaultMessage;
   }
 
   causedBy(causeError) {
