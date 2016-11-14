@@ -11,7 +11,36 @@
 
 ## Synopsis
 
-Create custom error types in node.js with meaningful messages and easy inheritance.
+Create custom error types in node.js (exclusive) with meaningful messages and easy inheritance.
+
+`CustomError` **DO NOT** inherits from standard `Error`, but behaves like it, including proper stack traces and proper formatting when used in ```console.log```. [See more below](#whyNot).
+
+In given example you may suppose that it is some error throwed by `doSomethingThatThrows`, but there is a typo in there (so**m**ething vs so**n**ething).
+
+## API Reference
+
+### `CustomError.create(<String> type, <String> ...defaultMessage)`
+
+Returns constructor of new error type. This new constructor prototypicaly inherits from CustomError. CustomError can not be invoked with `new` directly.
+
+### `CustomError#causedBy(<Error> causeError)`
+
+Appends `causeError.message` to your error instance message. Stores `causeError` under `CustomError#cause` property. [See example](#causedByExample).
+
+### `CustomError#formatMessage(<String> ...message)`
+
+Used internally to format error message. It can be overloaded to implement custom error message formatting. [See examples](#formatters).
+
+### `CustomError.global(<String> type, <String> ...defaultMessage)`
+
+Creates new error type like `CustomError.create`, but also sets it as global available identifer (using [`global namespace`](https://nodejs.org/api/globals.html#globals_global)). It also checks if type identifier is available and will throw if such name is already taken.
+
+#### But aren't globals bad thing!?
+
+You probably don't want register any globals in libriaries that are supposed to be used by others, but in applications code, you don't want `require` say `InternalError` or simillar error type everywhere.
+
+
+
 
 ## Code Example
 
@@ -56,7 +85,7 @@ new MyErrorType().message; // '2 + 3 = 5'
 new MyErrorType('num=%d, obj=%j', 2, {foo: 'bar'}).message; // 'num=2, obj={"foo":"bar"}'
 ```
 
-### Cause errors
+### <a name="causedByExample">Cause errors</a>
 Every `CustomError` instance has `causedBy(error)` method, that returns self instace. It appends cause error message to your error message and saves cause error under `cause` property of your error:
 
 ```javascript
@@ -131,6 +160,52 @@ function readConfig(configFilePath, callback) {
 
 ```
 
+## <a name="formatters">Custom message formatters</a>
+
+You may sometimes need to apply some advnaced message formatting, eg. create readable error message from array of validation errors. To do so, you should overload `CustomError.formatMessage` method:
+
+
+```javascript
+let validationResults = [{
+	path: 'foo.bar',
+	keyword: 'required',
+	message: 'bar is required',
+	input: null
+}, {
+	path: 'bar.foo',
+	keyword: 'min',
+	message: 'foo should be greater than 10'
+}];
+
+//ES6 way
+class ValidationError extends CustomError {
+	formatMessage(validationResults) {
+		return validationResults
+			.map((validationResults) => `${validationResults.path}: ${validationResults.message}`)
+			.join(', ');
+	}
+}
+
+console.log(new ValidationError(validationResults).message);
+// 'foo.bar: bar is required, bar.foo: foo should be greater than 10'
+
+
+//ES5 way
+function ValidationError(validationResults) {
+	CustomError.call(this, validationResults);
+}
+ValidationError.prototype = Object.create(CustomError.prototype);
+ValidationError.prototype.constructor = ValidationError;
+
+ValidationError.prototype.formatMessage = function(validationResults) {
+	return validationResults.map(function(validationResult) {
+      return validationResult.path + ': ' + validationResult.message;
+    }).join(', ');
+};
+
+console.log(new ValidationError(validationResults).message);
+// 'foo.bar: bar is required, bar.foo: foo should be greater than 10'
+```
 ## Installation
 
 ```
@@ -140,6 +215,20 @@ $ npm install --save @mprokopowicz/custom-error
 ```javascript
 var CustomError = require('@mprokopowicz/custom-error'); //es5
 const  CustomError = require('@mprokopowicz/custom-error'); //es6
+```
+
+## <a name="whyNot">Why it does not inherit from `Error`?</a>
+
+Standard `Error` may be throwed under many unpredictable circumstances including typos, undefined references etc. In such cases your program **should crash** as soon as possible and you should fix your bug. By testing if `error` you're about to catch is instance of `CustomError`, not `Error` you can avoid accidently catching and eventually supressing/ignoring generic `Error`, `TypeError` etc.
+
+```javascript
+try {
+	someObject.doSonethingThatThrows();
+} catch (error) {
+	if (error instanceof Error) {
+		console.log('failed to do something!');
+	}
+}
 ```
 
 
